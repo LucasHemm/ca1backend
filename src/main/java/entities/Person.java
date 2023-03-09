@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.HobbyDTO;
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -29,7 +31,7 @@ public class Person {
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private Set<Phone> phones = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "persons")
@@ -45,7 +47,22 @@ public class Person {
         this.phones = phones;
         this.address = address;
     }
+    public Person(String email, String firstName, String lastName, Address address, Set<Hobby> hobbies) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.hobbies = hobbies;
+    }
 
+    public Person(String email, String firstName, String lastName, Set<Phone> phones,Address address, Set<Hobby> hobbies) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phones = phones;
+        this.hobbies = hobbies;
+    }
 
 
     public Set<Hobby> getHobbies() {

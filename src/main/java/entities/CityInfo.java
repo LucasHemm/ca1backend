@@ -5,6 +5,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
+@NamedQueries( {
+        @NamedQuery(name = "CityInfo.findCityInfo", query = "select c from CityInfo c where c.zipCode = :zipCode")
+})
 public class CityInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +27,11 @@ public class CityInfo {
     }
 
     public CityInfo(String zipCode, String city) {
+        this.zipCode = zipCode;
+        this.city = city;
+    }
+    public CityInfo(int id, String zipCode, String city) {
+        this.id = id;
         this.zipCode = zipCode;
         this.city = city;
     }

@@ -33,6 +33,21 @@ public class Hobby {
     public Hobby() {
     }
 
+    public Hobby(String name, String wikiLink, String category, String type) {
+        this.name = name;
+        this.wikiLink = wikiLink;
+        this.category = category;
+        this.type = type;
+    }
+
+    public Hobby(int id, String name, String wikiLink, String category, String type) {
+        this.id = id;
+        this.name = name;
+        this.wikiLink = wikiLink;
+        this.category = category;
+        this.type = type;
+    }
+
     public Set<Person> getPersons() {
         return persons;
     }
@@ -79,5 +94,15 @@ public class Hobby {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "name = " + name + ", " +
+                "wikiLink = " + wikiLink + ", " +
+                "category = " + category + ", " +
+                "type = " + type + ")";
     }
 }

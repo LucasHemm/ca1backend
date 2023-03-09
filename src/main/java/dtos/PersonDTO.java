@@ -1,8 +1,10 @@
 package dtos;
 
+import entities.Hobby;
 import entities.Person;
 import entities.Phone;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class PersonDTO {
@@ -18,7 +20,6 @@ public class PersonDTO {
     }
 
     public PersonDTO(Person person){
-        this.id = person.getId();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
         this.email = person.getEmail();
@@ -64,12 +65,21 @@ public class PersonDTO {
     }
 
     public Set<Phone> getPhones() {
-        Set<Phone> phones = null;
+        Set<Phone> phones = new HashSet<>();
         for (PhoneDTO phoneDTO : phoneDTOS) {
             Phone phone = new Phone(phoneDTO.getNumber(), phoneDTO.getDescription());
             phones.add(phone);
         }
         return phones;
+    }
+
+    public Set<Hobby> getHobbies(){
+        Set<Hobby> hobbies = new HashSet<>();
+        for (HobbyDTO hobbyDTO : hobbyDTOS) {
+            Hobby hobby = new Hobby(hobbyDTO.getId(),hobbyDTO.getName(),hobbyDTO.getWikiLink(),hobbyDTO.getCategory(),hobbyDTO.getType());
+            hobbies.add(hobby);
+        }
+        return hobbies;
     }
 
     public void setPhoneDTOS(Set<PhoneDTO> phoneDTOS) {
