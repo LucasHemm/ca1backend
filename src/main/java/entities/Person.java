@@ -34,7 +34,10 @@ public class Person {
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private Set<Phone> phones = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "persons")
+    @ManyToMany
+    @JoinTable(name = "Person_hobbies",
+            joinColumns = @JoinColumn(name = "person_idPerson"),
+            inverseJoinColumns = @JoinColumn(name = "hobbies_idHobby"))
     private Set<Hobby> hobbies = new LinkedHashSet<>();
 
     public Person() {

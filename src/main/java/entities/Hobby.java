@@ -2,6 +2,7 @@ package entities;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -24,11 +25,9 @@ public class Hobby {
     @Column(name = "type", nullable = false, length = 100)
     private String type;
 
-    @ManyToMany
-    @JoinTable(name = "Hobby_persons",
-            joinColumns = @JoinColumn(name = "hobby_idHobby"),
-            inverseJoinColumns = @JoinColumn(name = "persons_idPerson"))
+    @ManyToMany(mappedBy = "hobbies")
     private Set<Person> persons = new LinkedHashSet<>();
+
 
     public Hobby() {
     }
@@ -104,5 +103,18 @@ public class Hobby {
                 "wikiLink = " + wikiLink + ", " +
                 "category = " + category + ", " +
                 "type = " + type + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hobby hobby = (Hobby) o;
+        return id != null && Objects.equals(id, hobby.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
