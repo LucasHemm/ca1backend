@@ -34,7 +34,7 @@ public class PersonFacade {
     }
 
     public PersonDTO create(PersonDTO personDTO){
-        return PersonMapper.createPerson(personDTO);
+        return PersonMapper.createPerson(personDTO,emf);
     }
 
     public static int getPersonCount() {
