@@ -54,6 +54,15 @@ public class PersonResource {
         return Response.ok().entity(count).build();
     }
 
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response editPerson(String input) {
+        PersonDTO personDTO = GSON.fromJson(input, PersonDTO.class);
+        PersonDTO personDTONew = PERSON_FACADE.editPerson(personDTO);
+        return Response.ok().entity(personDTONew).build();
+    }
+
 
 
 }

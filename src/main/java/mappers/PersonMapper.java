@@ -23,6 +23,7 @@ public class PersonMapper {
     private static EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
 
     public static PersonDTO createPerson(PersonDTO personDTO,EntityManagerFactory emf){
+        Person personToReturn = new Person();
         EntityManager em = emf.createEntityManager();
         Query query = em.createNamedQuery("CityInfo.findCity");
         query.setParameter("zipCode", personDTO.getAddressDTO().getZipCode());
@@ -64,8 +65,10 @@ public class PersonMapper {
         } finally {
             em.close();
         }
-
-        return new PersonDTO();
+        System.out.println(person.getFirstName() + "NAME " + person.getId() );
+        PersonDTO personDTO1 = new PersonDTO(person);
+        personDTO1.setId(person.getId());
+        return personDTO1;
     }
 
 
@@ -101,7 +104,10 @@ public class PersonMapper {
 
     public static PersonDTO editPerson(PersonDTO personDTO, EntityManagerFactory emf ){
         EntityManager em = emf.createEntityManager();
-        Person person = new Person(personDTO.getId(),personDTO.getEmail(), personDTO.getFirstName(), personDTO.getLastName(),personDTO.getPhones(), personDTO.getAddresses(emf), personDTO.getHobbies());
+        Query query = em.createNamedQuery("Person.findById");
+        query.setParameter("id", personDTO.getId());
+        Person person = (Person) query.getSingleResult();
+
         try {
             em.getTransaction().begin();
             person.setFirstName(personDTO.getFirstName());

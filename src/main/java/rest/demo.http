@@ -5,4 +5,21 @@ GET http://localhost:8080/ca1backend/api/person/count
 Content-Type: application/json
 #User-Agent: Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
 
-{"id": 14, "name": "Skuespil", "wikiLink":"https://en.wikipedia.org/wiki/Acting", "category": "Generel", "type": "Indendørs" }
+{
+  "id": 14,
+  "name": "Skuespil",
+  "wikiLink": "https://en.wikipedia.org/wiki/Acting",
+  "category": "Generel",
+  "type": "Indendørs"
+}
+
+###
+PUT http://localhost:8080/ca1backend/api/person/
+Content-Type: application/json
+
+{
+  "id": 8,
+  "firstName": "Peter",
+  "lastName": "Jackson",
+  "email": "PJ@mail"
+}

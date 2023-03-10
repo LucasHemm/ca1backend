@@ -20,6 +20,7 @@ public class PersonFacadeTest {
     Hobby hobby1;
     Phone phone1;
     Person person;
+    PersonDTO persistedPersonDTO;
 
     @BeforeAll
     public static void setUpClass() {
@@ -83,7 +84,8 @@ public class PersonFacadeTest {
 
 
             person = new Person("Mace@mail", "mace", "Windu", phoneSet1, address1, hobbySet1);
-            facade.create(new PersonDTO(person));
+           persistedPersonDTO =  facade.create(new PersonDTO(person));
+            System.out.println(persistedPersonDTO.getId() + " THIS IS THE ID");
             facade.create(new PersonDTO(new Person("Darth@mail", "Sheev", "Palpatine", phoneSet2, address2, hobbySet2)));
 
 
@@ -116,9 +118,9 @@ public class PersonFacadeTest {
     }
     @Test
     public void testEditPerson() {
-        PersonDTO personDTO = new PersonDTO(person);
+        PersonDTO personDTO = persistedPersonDTO;
         personDTO.setFirstName("Blaze");
-        PersonDTO personDTO1 =  facade.editPerson(personDTO);
+        PersonDTO personDTO1 =  PersonFacade.editPerson(personDTO);
         Assertions.assertEquals("Blaze", personDTO1.getFirstName(), "Expects one person with this phone number");
     }
 

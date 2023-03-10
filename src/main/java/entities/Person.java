@@ -14,7 +14,8 @@ import java.util.Set;
 })
 @NamedQueries({
         @NamedQuery(name = "Person.deleteAllPersons", query = "delete from Person"),
-        @NamedQuery(name = "Person.findAll", query = "select p from Person p")
+        @NamedQuery(name = "Person.findAll", query = "select p from Person p"),
+        @NamedQuery(name = "Person.findById", query = "select p from Person p where p.id = :id"),
 })
 public class Person {
     @Id
