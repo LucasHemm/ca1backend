@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 public class PersonMapper {
+    //Hallo
 
     private static EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
 
