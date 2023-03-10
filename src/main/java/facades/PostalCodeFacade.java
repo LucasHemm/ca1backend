@@ -1,7 +1,11 @@
 package facades;
 
+import dtos.PostalCodeDTO;
+import mappers.PostalCodeMapper;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.List;
 
 public class PostalCodeFacade {
 
@@ -30,6 +34,9 @@ public class PostalCodeFacade {
         return emf.createEntityManager();
     }
 
+    public static List<PostalCodeDTO> getPostalCodes(){
+        return PostalCodeMapper.getPostalCodes(emf);
+    }
 
 
 }

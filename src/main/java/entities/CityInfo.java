@@ -5,8 +5,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@NamedQueries( {
-        @NamedQuery(name = "CityInfo.findCityInfo", query = "select c from CityInfo c where c.zipCode = :zipCode")
+@NamedQueries({
+        @NamedQuery(name = "CityInfo.findByOrderByCityDesc", query = "select c from CityInfo c order by c.city DESC"),
+        @NamedQuery(name = "CityInfo.deleteAllRows", query = "delete from CityInfo"),
+        @NamedQuery(name = "CityInfo.findCity", query = "select c from CityInfo c where c.zipCode = :zipCode")
 })
 public class CityInfo {
     @Id
