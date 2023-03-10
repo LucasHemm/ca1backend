@@ -5,6 +5,7 @@ import mappers.PersonMapper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.List;
 
 public class PersonFacade {
 
@@ -34,6 +35,18 @@ public class PersonFacade {
 
     public PersonDTO create(PersonDTO personDTO){
         return PersonMapper.createPerson(personDTO);
+    }
+
+    public static int getPersonCount() {
+        return PersonMapper.getPersonCount(emf);
+    }
+
+    public static List<PersonDTO> findUsersByHobby(String hobby) {
+        return PersonMapper.findUsersByHobby(hobby, emf);
+    }
+
+    public static PersonDTO editPerson(PersonDTO personDTO) {
+        return PersonMapper.editPerson(personDTO, emf);
     }
 
 }
