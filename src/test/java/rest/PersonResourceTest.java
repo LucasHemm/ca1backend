@@ -126,7 +126,7 @@ public class PersonResourceTest {
                 .body("size()", equalTo(2));
 
     }
-
+//Test
     @Test
     public void createPerson() {
         Phone phone3 = new Phone("26262626", "no additional info");
