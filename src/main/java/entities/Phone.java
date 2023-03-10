@@ -3,6 +3,9 @@ package entities;
 import javax.persistence.*;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Phone.deleteAll", query = "delete from Phone")
+})
 public class Phone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,8 @@
 package dtos;
 
-import entities.Hobby;
-import entities.Person;
-import entities.Phone;
+import entities.*;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -80,6 +79,15 @@ public class PersonDTO {
             hobbies.add(hobby);
         }
         return hobbies;
+    }
+
+    public Address getAddresses(EntityManagerFactory emf){
+        EntityManager em = emf.createEntityManager();
+        Query query = em.createNamedQuery("CityInfo.findCity", CityInfo.class);
+        query.setParameter("zipCode", addressDTO.getZipCode());
+        CityInfo cityInfo = (CityInfo) query.getSingleResult();
+        Address address = new Address(addressDTO.getStreet(),addressDTO.getAdditionalInfo(),cityInfo);
+        return address;
     }
 
     public void setPhoneDTOS(Set<PhoneDTO> phoneDTOS) {

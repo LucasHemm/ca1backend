@@ -24,6 +24,7 @@ public class PostalCodeMapper {
             PostalCodeDTO pDTO = new PostalCodeDTO(p);
             postalCodes.add(pDTO);
         }
+        em.close();
         return postalCodes;
     }
 

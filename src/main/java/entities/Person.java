@@ -12,6 +12,10 @@ import java.util.Set;
         @Index(name = "email_UNIQUE", columnList = "email", unique = true),
         @Index(name = "fk_Person_Address1_idx", columnList = "address_id")
 })
+@NamedQueries({
+        @NamedQuery(name = "Person.deleteAllPersons", query = "delete from Person"),
+        @NamedQuery(name = "Person.findAll", query = "select p from Person p")
+})
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +38,7 @@ public class Person {
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private Set<Phone> phones = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "Person_hobbies",
             joinColumns = @JoinColumn(name = "person_idPerson"),
             inverseJoinColumns = @JoinColumn(name = "hobbies_idHobby"))
@@ -67,6 +71,15 @@ public class Person {
         this.hobbies = hobbies;
     }
 
+    public Person(Integer id, String email, String firstName, String lastName, Set<Phone> phones,Address address, Set<Hobby> hobbies) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phones = phones;
+        this.hobbies = hobbies;
+    }
 
     public Set<Hobby> getHobbies() {
         return hobbies;

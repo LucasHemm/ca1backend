@@ -72,6 +72,10 @@ public class PostalCodeResourceTest {
 
         try {
             em.getTransaction().begin();
+            em.createNamedQuery("Phone.deleteAll").executeUpdate();
+            em.createNamedQuery("Person.deleteAllPersons").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAll").executeUpdate();
+            em.createNamedQuery("Address.deleteAll").executeUpdate();
             em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
             em.persist(c1);
             em.persist(c2);

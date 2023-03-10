@@ -1,11 +1,16 @@
 package facades;
 
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
+import dtos.PhoneDTO;
+import entities.Person;
 import mappers.PersonMapper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class PersonFacade {
 
@@ -37,16 +42,24 @@ public class PersonFacade {
         return PersonMapper.createPerson(personDTO,emf);
     }
 
-    public static int getPersonCount() {
-        return PersonMapper.getPersonCount(emf);
+    public static Long getPersonCount(HobbyDTO hobbyDTO) {
+        return PersonMapper.getPersonCount(hobbyDTO,emf);
     }
 
-    public static List<PersonDTO> findUsersByHobby(String hobby) {
-        return PersonMapper.findUsersByHobby(hobby, emf);
+    public static List<PersonDTO> getPersonByHobby(HobbyDTO hobbyDTO) {
+        return PersonMapper.getPersonByHobby(hobbyDTO, emf);
     }
 
     public static PersonDTO editPerson(PersonDTO personDTO) {
         return PersonMapper.editPerson(personDTO, emf);
     }
+    public PersonDTO getPersonByNumber(PhoneDTO phoneDTO){
+        return PersonMapper.getPersonByNumber(phoneDTO, emf);
+    }
 
+    public Set<Person> getAllPersons() {
+        return PersonMapper.getAllPersons(emf);
+
+
+    }
 }

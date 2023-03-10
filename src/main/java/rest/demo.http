@@ -1,8 +1,8 @@
 GET http://localhost:8080/ca1backend/api/person
 
 ###
-POST http://localhost:8080/ca1backend/api/person
+GET http://localhost:8080/ca1backend/api/person/count
 Content-Type: application/json
 #User-Agent: Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
 
-{"firstName": "First Property", "str2": "Second Property"}
+{"id": 14, "name": "Skuespil", "wikiLink":"https://en.wikipedia.org/wiki/Acting", "category": "Generel", "type": "Indendørs" }
