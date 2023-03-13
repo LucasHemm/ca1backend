@@ -5,6 +5,8 @@ import dtos.PersonDTO;
 import dtos.PhoneDTO;
 import dtos.PostalCodeDTO;
 import entities.*;
+import errorhandling.ExceptionDTO;
+import errorhandling.PersonNotFoundException;
 import facades.PersonFacade;
 import utils.EMF_Creator;
 
@@ -23,7 +25,7 @@ public class PersonMapper {
 
     private static EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
 
-    public static PersonDTO createPerson(PersonDTO personDTO,EntityManagerFactory emf){
+    public static PersonDTO createPerson(PersonDTO personDTO, EntityManagerFactory emf) throws PersonNotFoundException {
         Person personToReturn = new Person();
         EntityManager em = emf.createEntityManager();
         Query query = em.createNamedQuery("CityInfo.findCity");
@@ -32,7 +34,7 @@ public class PersonMapper {
 
         Address address = new Address(personDTO.getAddressDTO().getStreet(), personDTO.getAddressDTO().getAdditionalInfo(), cityInfo);
         Set<Phone> phones = personDTO.getPhones();
-        Person person = new Person(personDTO.getEmail(), personDTO.getFirstName(), personDTO.getLastName(), address,personDTO.getHobbies());
+        Person person = new Person(personDTO.getEmail(), personDTO.getFirstName(), personDTO.getLastName(), address, personDTO.getHobbies());
 
         try {
             TypedQuery<Address> tq = em.createQuery("select a from Address a where a.street = :street AND a.cityInfo = :cityInfo", Address.class);
@@ -42,6 +44,8 @@ public class PersonMapper {
             if (addresses.size() > 0) {
                 address = tq.getSingleResult();
             }
+        } catch (Exception e) {
+            throw new PersonNotFoundException("Address not found");
         } finally {
         }
         if (address.getId() == null) {
@@ -50,6 +54,8 @@ public class PersonMapper {
                 em.persist(address);
                 em.getTransaction().commit();
                 System.out.println("ADRESSEN ER NU LAVET");
+            } catch (Exception e) {
+                throw new PersonNotFoundException("Could not inset address");
             } finally {
 
             }
@@ -63,58 +69,71 @@ public class PersonMapper {
                 em.persist(phone);
             }
             em.getTransaction().commit();
+        } catch (Exception e) {
+            throw new PersonNotFoundException("Could not insert person");
         } finally {
             em.close();
         }
-        System.out.println(person.getFirstName() + "NAME " + person.getId() );
+        System.out.println(person.getFirstName() + "NAME " + person.getId());
         PersonDTO personDTO1 = new PersonDTO(person);
         personDTO1.setId(person.getId());
+
+
         return personDTO1;
     }
 
 
-    public static Long getPersonCount(HobbyDTO hobbyDTO, EntityManagerFactory emf){
+    public static Long getPersonCount(HobbyDTO hobbyDTO, EntityManagerFactory emf) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
         Hobby hobby = new Hobby();
-        try{
-        Query query = em.createNamedQuery("Hobby.findHobbyByName");
-        query.setParameter("name", hobbyDTO.getName());
-        hobby = (Hobby) query.getSingleResult();
-        } catch (Exception e){
-            System.out.println("Hobby not found");
+        try {
+            Query query = em.createNamedQuery("Hobby.findHobbyByName");
+            query.setParameter("name", hobbyDTO.getName());
+            hobby = (Hobby) query.getSingleResult();
+        } catch (Exception e) {
+            throw new PersonNotFoundException("Hobby not found");
         }
 
 //        Hobby hobby = em.find(Hobby.class, hobbyDTO.getId());
-        try{
-            Query query1 =  em.createQuery("SELECT COUNT(p) FROM Person p JOIN p.hobbies h " +
+        try {
+            Query query1 = em.createQuery("SELECT COUNT(p) FROM Person p JOIN p.hobbies h " +
                     "WHERE h = :hobby");
             query1.setParameter("hobby", hobby);
             Long res = (Long) query1.getSingleResult();
             System.out.println(res + "res");
             return res;
-        }finally{
+        } catch (Exception e) {
+            throw new PersonNotFoundException("Could not get count");
+        } finally {
             em.close();
         }
     }
 
 
-    public static List<PersonDTO> getPersonByHobby(HobbyDTO hobbyDTO, EntityManagerFactory emf) {
+    public static List<PersonDTO> getPersonByHobby(HobbyDTO hobbyDTO, EntityManagerFactory emf) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
-        String queryString = "SELECT p FROM Person p JOIN p.hobbies h " +
-                "WHERE h.name = :hobbyName";
-        TypedQuery<Person> query = em.createQuery(queryString, Person.class);
-        query.setParameter("hobbyName", hobbyDTO.getName());
-        List<Person> resultList = query.getResultList();
         List<PersonDTO> resultDTOList = new ArrayList<>();
-        for (Person person : resultList) {
-            PersonDTO personDTO = new PersonDTO(person);
-            resultDTOList.add(personDTO);
+        try {
+            String queryString = "SELECT p FROM Person p JOIN p.hobbies h " +
+                    "WHERE h.name = :hobbyName";
+            TypedQuery<Person> query = em.createQuery(queryString, Person.class);
+            query.setParameter("hobbyName", hobbyDTO.getName());
+            List<Person> resultList = query.getResultList();
+
+            for (Person person : resultList) {
+                PersonDTO personDTO = new PersonDTO(person);
+                resultDTOList.add(personDTO);
+            }
+        } catch (Exception e) {
+            throw new PersonNotFoundException("Could not get person by hobby");
+        } finally {
+            em.close();
         }
-        em.close();
+
         return resultDTOList;
     }
 
-    public static PersonDTO editPerson(PersonDTO personDTO, EntityManagerFactory emf ){
+    public static PersonDTO editPerson(PersonDTO personDTO, EntityManagerFactory emf) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
         Query query = em.createNamedQuery("Person.findById");
         query.setParameter("id", personDTO.getId());
@@ -126,49 +145,72 @@ public class PersonMapper {
             person.setLastName(personDTO.getLastName());
             person.setEmail(personDTO.getEmail());
             em.getTransaction().commit();
+        } catch (Exception e) {
+            throw new PersonNotFoundException("Could not edit person");
+
         } finally {
             em.close();
         }
         return new PersonDTO(person);
     }
-    public static PersonDTO getPersonByNumber(PhoneDTO phoneDTO, EntityManagerFactory emf){
+
+    public static PersonDTO getPersonByNumber(PhoneDTO phoneDTO, EntityManagerFactory emf) throws PersonNotFoundException {
+        Person p;
+        PersonDTO pDTO;
         EntityManager em = emf.createEntityManager();
-        TypedQuery<Person> query = em.createQuery("SELECT ph.person FROM Phone ph WHERE ph.number = :number", Person.class);
-        query.setParameter("number", phoneDTO.getNumber());
-        Person p = query.getSingleResult();
-        System.out.println(p.getFirstName() + "this is PERSON P");
-        PersonDTO pDTO = new PersonDTO(p);
-        em.close();
+        try {
+            TypedQuery<Person> query = em.createQuery("SELECT ph.person FROM Phone ph WHERE ph.number = :number", Person.class);
+            query.setParameter("number", phoneDTO.getNumber());
+            p = query.getSingleResult();
+            System.out.println(p.getFirstName() + "this is PERSON P");
+            pDTO = new PersonDTO(p);
+        } catch (Exception e) {
+            throw new PersonNotFoundException("Could not get person by number");
+        } finally {
+            em.close();
+        }
         return pDTO;
 
 
     }
 
-    public static List<PersonDTO> getAllPersons(EntityManagerFactory emf) {
+    public static List<PersonDTO> getAllPersons(EntityManagerFactory emf) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
-        List<Person> personList =  em.createNamedQuery("Person.findAll").getResultList();
         List<PersonDTO> personDTOList = new ArrayList<>();
-        for (Person person : personList) {
-            PersonDTO personDTO = new PersonDTO(person);
-            personDTOList.add(personDTO);
+
+        try {
+            List<Person> personList = em.createNamedQuery("Person.findAll").getResultList();
+            for (Person person : personList) {
+                PersonDTO personDTO = new PersonDTO(person);
+                personDTOList.add(personDTO);
+            }
+        } catch (Exception e) {
+            throw new PersonNotFoundException("Could not get all persons");
+        } finally {
+            em.close();
         }
         return personDTOList;
     }
 
 
-    public static List<PersonDTO> getPeopleByPostalCode(PostalCodeDTO postalCode, EntityManagerFactory emf){
+    public static List<PersonDTO> getPeopleByPostalCode(PostalCodeDTO postalCode, EntityManagerFactory emf) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
-        ArrayList<PersonDTO> personDTOS= new ArrayList<>();
+        ArrayList<PersonDTO> personDTOS = new ArrayList<>();
 
-        String queryString = "SELECT p FROM Person p JOIN p.address a JOIN a.cityInfo c WHERE c.zipCode = :postalCode";
-        TypedQuery query = em.createQuery(queryString, Person.class);
-        query.setParameter("postalCode", postalCode.getZipCode());
-        List<Person> resultList = query.getResultList();
-        for (Person person : resultList) {
-            PersonDTO personDTO = new PersonDTO(person);
-            personDTOS.add(personDTO);
+        try {
+            String queryString = "SELECT p FROM Person p JOIN p.address a JOIN a.cityInfo c WHERE c.zipCode = :postalCode";
+            TypedQuery query = em.createQuery(queryString, Person.class);
+            query.setParameter("postalCode", postalCode.getZipCode());
+            List<Person> resultList = query.getResultList();
+            for (Person person : resultList) {
+                PersonDTO personDTO = new PersonDTO(person);
+                personDTOS.add(personDTO);
+            }
+        } catch (Exception e) {
+            throw new PersonNotFoundException("Could not get people by postal code");
+        } finally {
+            em.close();
         }
-
         return personDTOS;
     }
 

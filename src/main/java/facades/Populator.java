@@ -8,6 +8,7 @@ package facades;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.*;
+import errorhandling.PersonNotFoundException;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
@@ -21,7 +22,7 @@ import java.util.Set;
  * @author tha
  */
 public class Populator {
-    public static void populate(){
+    public static void populate() throws PersonNotFoundException {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         EntityManager em = emf.createEntityManager();
         PersonFacade pf = PersonFacade.getPersonFacade(emf);
@@ -45,6 +46,10 @@ public class Populator {
     }
     
     public static void main(String[] args) {
-        populate();
+        try {
+            populate();
+        } catch (PersonNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

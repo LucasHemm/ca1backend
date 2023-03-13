@@ -1,6 +1,7 @@
 package facades;
 
 import entities.CityInfo;
+import errorhandling.PersonNotFoundException;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
@@ -51,7 +52,7 @@ public class PostalCodeFacadeTest {
     }
 
     @Test
-    public void testGetPostalCodes() {
+    public void testGetPostalCodes() throws PersonNotFoundException {
 
         Assertions.assertEquals(2, facade.getPostalCodes().size(), "Expects two rows in the database");
     }

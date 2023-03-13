@@ -6,6 +6,7 @@ import dtos.PhoneDTO;
 import dtos.PostalCodeDTO;
 import entities.CityInfo;
 import entities.Person;
+import errorhandling.PersonNotFoundException;
 import mappers.PersonMapper;
 
 import javax.persistence.EntityManager;
@@ -36,35 +37,35 @@ public class PersonFacade {
         return instance;
     }
 
-    private EntityManager getEntityManager() {
+    private EntityManager getEntityManager() throws PersonNotFoundException {
         return emf.createEntityManager();
     }
 
-    public PersonDTO create(PersonDTO personDTO){
+    public PersonDTO create(PersonDTO personDTO) throws PersonNotFoundException{
         return PersonMapper.createPerson(personDTO,emf);
     }
 
-    public static Long getPersonCount(HobbyDTO hobbyDTO) {
+    public static Long getPersonCount(HobbyDTO hobbyDTO) throws PersonNotFoundException {
         return PersonMapper.getPersonCount(hobbyDTO,emf);
     }
 
-    public static List<PersonDTO> getPersonByHobby(HobbyDTO hobbyDTO) {
+    public static List<PersonDTO> getPersonByHobby(HobbyDTO hobbyDTO) throws PersonNotFoundException{
         return PersonMapper.getPersonByHobby(hobbyDTO, emf);
     }
 
-    public static PersonDTO editPerson(PersonDTO personDTO) {
+    public static PersonDTO editPerson(PersonDTO personDTO) throws PersonNotFoundException {
         return PersonMapper.editPerson(personDTO, emf);
     }
 
-    public PersonDTO getPersonByNumber(PhoneDTO phoneDTO){
+    public PersonDTO getPersonByNumber(PhoneDTO phoneDTO) throws PersonNotFoundException{
         return PersonMapper.getPersonByNumber(phoneDTO, emf);
     }
 
-    public List<PersonDTO> getAllPersons() {
+    public List<PersonDTO> getAllPersons() throws PersonNotFoundException {
         return PersonMapper.getAllPersons(emf);
     }
 
-    public static List<PersonDTO> getPeopleByPostalCode(PostalCodeDTO postalCode) {
+    public static List<PersonDTO> getPeopleByPostalCode(PostalCodeDTO postalCode) throws PersonNotFoundException{
         return PersonMapper.getPeopleByPostalCode(postalCode, emf);
     }
 

@@ -10,6 +10,7 @@ import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import errorhandling.PersonNotFoundException;
 import facades.PersonFacade;
 import utils.EMF_Creator;
 
@@ -33,7 +34,7 @@ public class PersonResource {
     @GET
     @Path("{number}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getPersonByPhone(@PathParam("number") String number) {
+    public Response getPersonByPhone(@PathParam("number") String number) throws PersonNotFoundException {
         EntityManager em = EMF.createEntityManager();
         Query query = em.createNamedQuery("Phone.findByNumber");
         query.setParameter("number", number);
@@ -56,7 +57,7 @@ public class PersonResource {
     @GET
     @Path("home")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getAllPersons() {
+    public Response getAllPersons() throws PersonNotFoundException{
 
         List<PersonDTO> personDTOList = PERSON_FACADE.getAllPersons();
         String json = GSON.toJson(personDTOList);
@@ -68,7 +69,7 @@ public class PersonResource {
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response addPerson(String input) {
+    public Response addPerson(String input) throws PersonNotFoundException{
         PersonDTO personDTO = GSON.fromJson(input, PersonDTO.class);
         PersonDTO personDTONew = PERSON_FACADE.create(personDTO);
         return Response.ok().entity(personDTONew).build();
@@ -78,7 +79,7 @@ public class PersonResource {
     @Path("count/{hobby}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response getPersonCount(@PathParam("hobby") String hobbyName) {
+    public Response getPersonCount(@PathParam("hobby") String hobbyName) throws PersonNotFoundException {
 
         HobbyDTO hobbyDTO = new HobbyDTO(hobbyName);
 
@@ -92,7 +93,7 @@ public class PersonResource {
     @Path("hobby/{hobby}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response getPersonsByHobby(@PathParam("hobby") String hobbyName) {
+    public Response getPersonsByHobby(@PathParam("hobby") String hobbyName) throws PersonNotFoundException {
 
         HobbyDTO hobbyDTO = new HobbyDTO(hobbyName);
 
@@ -103,7 +104,7 @@ public class PersonResource {
     @Path("edit/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response editPerson(@PathParam("id")int id,String input) {
+    public Response editPerson(@PathParam("id")int id,String input) throws PersonNotFoundException{
         PersonDTO personDTO = GSON.fromJson(input, PersonDTO.class);
         personDTO.setId(id);
         PersonDTO personDTONew = PERSON_FACADE.editPerson(personDTO);
@@ -114,7 +115,7 @@ public class PersonResource {
     @Path("zip/{zip}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response getPersonsByZip(@PathParam("zip") String zip) {
+    public Response getPersonsByZip(@PathParam("zip") String zip)throws PersonNotFoundException {
         PostalCodeDTO postalCodeDTO = new PostalCodeDTO(zip);
 
         return Response.ok().entity(PERSON_FACADE.getPeopleByPostalCode(postalCodeDTO)).build();

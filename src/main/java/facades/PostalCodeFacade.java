@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.PostalCodeDTO;
+import errorhandling.PersonNotFoundException;
 import mappers.PostalCodeMapper;
 
 import javax.persistence.EntityManager;
@@ -34,7 +35,7 @@ public class PostalCodeFacade {
         return emf.createEntityManager();
     }
 
-    public static List<PostalCodeDTO> getPostalCodes(){
+    public static List<PostalCodeDTO> getPostalCodes() throws PersonNotFoundException {
         return PostalCodeMapper.getPostalCodes(emf);
     }
 

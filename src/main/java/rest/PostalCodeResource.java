@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import errorhandling.PersonNotFoundException;
 import facades.PostalCodeFacade;
 import utils.EMF_Creator;
 
@@ -24,7 +25,7 @@ public class PostalCodeResource {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getAllPostalCodes() {
+    public Response getAllPostalCodes() throws PersonNotFoundException {
         return Response.ok().entity(GSON.toJson(PostalCodeFacade.getPostalCodes())).build();
     }
 

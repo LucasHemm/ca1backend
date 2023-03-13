@@ -4,6 +4,7 @@ import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import dtos.PhoneDTO;
 import entities.*;
+import errorhandling.PersonNotFoundException;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
@@ -34,7 +35,7 @@ public class PersonFacadeTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
@@ -98,25 +99,25 @@ public class PersonFacadeTest {
     }
 
     @Test
-    public void testGetCount() {
+    public void testGetCount() throws PersonNotFoundException {
         HobbyDTO hobbyDTO = new HobbyDTO(hobby1);
         Assertions.assertEquals(1L, PersonFacade.getPersonCount(hobbyDTO), "Expects one person with this hobby");
     }
 
     @Test
-    public void testGetPersonByHobby() {
+    public void testGetPersonByHobby()  throws PersonNotFoundException{
         HobbyDTO hobbyDTO = new HobbyDTO(hobby1);
         Assertions.assertEquals(1, facade.getPersonByHobby(hobbyDTO).size(), "Expects one person with this hobby");
     }
 
     @Test
-    public void testGetPersonByPhone() {
+    public void testGetPersonByPhone()  throws PersonNotFoundException{
         PhoneDTO phoneDTO = new PhoneDTO(phone1);
         Assertions.assertEquals("mace", facade.getPersonByNumber(phoneDTO).getFirstName(), "Expects one person with this phone number");
     }
 
     @Test
-    public void testEditPerson() {
+    public void testEditPerson() throws PersonNotFoundException {
         PersonDTO personDTO = persistedPersonDTO;
         personDTO.setFirstName("Blaze");
         PersonDTO personDTO1 = PersonFacade.editPerson(personDTO);
@@ -124,7 +125,7 @@ public class PersonFacadeTest {
     }
 
     @Test
-    public void testCreatePerson() {
+    public void testCreatePerson()  throws PersonNotFoundException{
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         CityInfo cityInfo3 = new CityInfo("3500", "Værløse");
