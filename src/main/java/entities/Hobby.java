@@ -8,7 +8,8 @@ import java.util.Set;
 @Entity
 @Table(name = "Hobby")
 @NamedQueries({
-        @NamedQuery(name = "Hobby.deleteAll", query = "delete from Hobby")
+        @NamedQuery(name = "Hobby.deleteAll", query = "delete from Hobby"),
+        @NamedQuery(name = "Hobby.findHobbyByName", query = "select h from Hobby h where h.name = :name")
 })
 public class Hobby {
     @Id
@@ -98,15 +99,15 @@ public class Hobby {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "name = " + name + ", " +
-                "wikiLink = " + wikiLink + ", " +
-                "category = " + category + ", " +
-                "type = " + type + ")";
-    }
+//    @Override
+//    public String toString() {
+//        return getClass().getSimpleName() + "(" +
+//                "id = " + id + ", " +
+//                "name = " + name + ", " +
+//                "wikiLink = " + wikiLink + ", " +
+//                "category = " + category + ", " +
+//                "type = " + type + ")";
+//    }
 
     @Override
     public boolean equals(Object o) {

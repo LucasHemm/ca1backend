@@ -27,6 +27,9 @@ public class CityInfo {
 
     public CityInfo() {
     }
+    public CityInfo(String zip) {
+        this.zipCode = zip;
+    }
 
     public CityInfo(String zipCode, String city) {
         this.zipCode = zipCode;

@@ -32,6 +32,7 @@ public class Person {
     @Column(name = "lastName", nullable = false, length = 45)
     private String lastName;
 
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;

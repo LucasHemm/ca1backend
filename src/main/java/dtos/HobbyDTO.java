@@ -15,6 +15,9 @@ public class HobbyDTO {
 
     public HobbyDTO() {
     }
+    public HobbyDTO(String name) {
+        this.name = name;
+    }
 
     public HobbyDTO(Hobby hobby){
         this.id = hobby.getId();

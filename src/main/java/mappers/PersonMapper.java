@@ -3,6 +3,7 @@ package mappers;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import dtos.PhoneDTO;
+import dtos.PostalCodeDTO;
 import entities.*;
 import facades.PersonFacade;
 import utils.EMF_Creator;
@@ -74,12 +75,23 @@ public class PersonMapper {
 
     public static Long getPersonCount(HobbyDTO hobbyDTO, EntityManagerFactory emf){
         EntityManager em = emf.createEntityManager();
-        Hobby hobby = em.find(Hobby.class, hobbyDTO.getId());
+        Hobby hobby = new Hobby();
         try{
-            Query query =  em.createQuery("SELECT COUNT(p) FROM Person p JOIN p.hobbies h " +
+        Query query = em.createNamedQuery("Hobby.findHobbyByName");
+        query.setParameter("name", hobbyDTO.getName());
+        hobby = (Hobby) query.getSingleResult();
+        } catch (Exception e){
+            System.out.println("Hobby not found");
+        }
+
+//        Hobby hobby = em.find(Hobby.class, hobbyDTO.getId());
+        try{
+            Query query1 =  em.createQuery("SELECT COUNT(p) FROM Person p JOIN p.hobbies h " +
                     "WHERE h = :hobby");
-            query.setParameter("hobby", hobby);
-            return (Long)query.getSingleResult();
+            query1.setParameter("hobby", hobby);
+            Long res = (Long) query1.getSingleResult();
+            System.out.println(res + "res");
+            return res;
         }finally{
             em.close();
         }
@@ -124,6 +136,7 @@ public class PersonMapper {
         TypedQuery<Person> query = em.createQuery("SELECT ph.person FROM Phone ph WHERE ph.number = :number", Person.class);
         query.setParameter("number", phoneDTO.getNumber());
         Person p = query.getSingleResult();
+        System.out.println(p.getFirstName() + "this is PERSON P");
         PersonDTO pDTO = new PersonDTO(p);
         em.close();
         return pDTO;
@@ -131,9 +144,33 @@ public class PersonMapper {
 
     }
 
-    public static Set<Person> getAllPersons(EntityManagerFactory emf) {
+    public static List<PersonDTO> getAllPersons(EntityManagerFactory emf) {
         EntityManager em = emf.createEntityManager();
-        Set<Person> persons = (Set<Person>) em.createNamedQuery("Person.findAll").getResultList().stream().collect(Collectors.toSet());
-        return persons;
+        List<Person> personList =  em.createNamedQuery("Person.findAll").getResultList();
+        List<PersonDTO> personDTOList = new ArrayList<>();
+        for (Person person : personList) {
+            PersonDTO personDTO = new PersonDTO(person);
+            personDTOList.add(personDTO);
+        }
+        return personDTOList;
     }
+
+
+    public static List<PersonDTO> getPeopleByPostalCode(PostalCodeDTO postalCode, EntityManagerFactory emf){
+        EntityManager em = emf.createEntityManager();
+        ArrayList<PersonDTO> personDTOS= new ArrayList<>();
+
+        String queryString = "SELECT p FROM Person p JOIN p.address a JOIN a.cityInfo c WHERE c.zipCode = :postalCode";
+        TypedQuery query = em.createQuery(queryString, Person.class);
+        query.setParameter("postalCode", postalCode.getZipCode());
+        List<Person> resultList = query.getResultList();
+        for (Person person : resultList) {
+            PersonDTO personDTO = new PersonDTO(person);
+            personDTOS.add(personDTO);
+        }
+
+        return personDTOS;
+    }
+
+
 }

@@ -4,7 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Phone.deleteAll", query = "delete from Phone")
+        @NamedQuery(name = "Phone.deleteAll", query = "delete from Phone"),
+        @NamedQuery(name = "Phone.findByNumber", query = "select p from Phone p where p.number = :number")
 })
 public class Phone {
     @Id

@@ -3,6 +3,8 @@ package facades;
 import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import dtos.PhoneDTO;
+import dtos.PostalCodeDTO;
+import entities.CityInfo;
 import entities.Person;
 import mappers.PersonMapper;
 
@@ -53,13 +55,17 @@ public class PersonFacade {
     public static PersonDTO editPerson(PersonDTO personDTO) {
         return PersonMapper.editPerson(personDTO, emf);
     }
+
     public PersonDTO getPersonByNumber(PhoneDTO phoneDTO){
         return PersonMapper.getPersonByNumber(phoneDTO, emf);
     }
 
-    public Set<Person> getAllPersons() {
+    public List<PersonDTO> getAllPersons() {
         return PersonMapper.getAllPersons(emf);
-
-
     }
+
+    public static List<PersonDTO> getPeopleByPostalCode(PostalCodeDTO postalCode) {
+        return PersonMapper.getPeopleByPostalCode(postalCode, emf);
+    }
+
 }

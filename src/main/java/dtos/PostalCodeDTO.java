@@ -9,6 +9,9 @@ public class PostalCodeDTO {
 
     public PostalCodeDTO() {
     }
+    public PostalCodeDTO(String zip) {
+        this.zipCode = zip;
+    }
 
     public PostalCodeDTO(CityInfo cityInfo){
         this.zipCode = cityInfo.getZipCode();

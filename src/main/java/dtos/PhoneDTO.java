@@ -29,6 +29,10 @@ public class PhoneDTO {
         this.description = phone.getDescription();
     }
 
+    public PhoneDTO(String number){
+        this.number = number;
+    }
+
     public int getId() {
         return id;
     }

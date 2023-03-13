@@ -67,7 +67,6 @@ public class PersonFacadeTest {
             em.getTransaction().commit();
 
 
-
             Set<Hobby> hobbySet1 = new HashSet<>();
             Set<Hobby> hobbySet2 = new HashSet<>();
             hobbySet1.add(hobby1);
@@ -82,12 +81,10 @@ public class PersonFacadeTest {
             phoneSet2.add(phone2);
 
 
-
             person = new Person("Mace@mail", "mace", "Windu", phoneSet1, address1, hobbySet1);
-           persistedPersonDTO =  facade.create(new PersonDTO(person));
+            persistedPersonDTO = facade.create(new PersonDTO(person));
             System.out.println(persistedPersonDTO.getId() + " THIS IS THE ID");
             facade.create(new PersonDTO(new Person("Darth@mail", "Sheev", "Palpatine", phoneSet2, address2, hobbySet2)));
-
 
 
         } finally {
@@ -102,8 +99,8 @@ public class PersonFacadeTest {
 
     @Test
     public void testGetCount() {
-        HobbyDTO hobby = new HobbyDTO(hobby1);
-        Assertions.assertEquals(1, PersonFacade.getPersonCount(hobby), "Expects one person with this hobby");
+        HobbyDTO hobbyDTO = new HobbyDTO(hobby1);
+        Assertions.assertEquals(1L, PersonFacade.getPersonCount(hobbyDTO), "Expects one person with this hobby");
     }
 
     @Test
@@ -111,21 +108,23 @@ public class PersonFacadeTest {
         HobbyDTO hobbyDTO = new HobbyDTO(hobby1);
         Assertions.assertEquals(1, facade.getPersonByHobby(hobbyDTO).size(), "Expects one person with this hobby");
     }
+
     @Test
     public void testGetPersonByPhone() {
         PhoneDTO phoneDTO = new PhoneDTO(phone1);
         Assertions.assertEquals("mace", facade.getPersonByNumber(phoneDTO).getFirstName(), "Expects one person with this phone number");
     }
+
     @Test
     public void testEditPerson() {
         PersonDTO personDTO = persistedPersonDTO;
         personDTO.setFirstName("Blaze");
-        PersonDTO personDTO1 =  PersonFacade.editPerson(personDTO);
+        PersonDTO personDTO1 = PersonFacade.editPerson(personDTO);
         Assertions.assertEquals("Blaze", personDTO1.getFirstName(), "Expects one person with this phone number");
     }
 
     @Test
-    public void testCreatePerson(){
+    public void testCreatePerson() {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         CityInfo cityInfo3 = new CityInfo("3500", "Værløse");
