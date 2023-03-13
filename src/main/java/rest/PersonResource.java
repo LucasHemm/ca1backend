@@ -43,7 +43,7 @@ public class PersonResource {
         PhoneDTO phoneDTOTEST = new PhoneDTO(phone);
         phoneDTOTEST.setId(phone.getId());
 //        PhoneDTO phoneDTO = GSON.fromJson(number, PhoneDTO.class);
-//        System.out.println(phoneDTO);
+//        System.out.println(phoneDTO); hiueuihug
         PersonDTO personDTO = PERSON_FACADE.getPersonByNumber(phoneDTOTEST);
         return Response.ok().entity(GSON.toJson(personDTO)).build();
     }
