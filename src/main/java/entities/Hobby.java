@@ -9,7 +9,8 @@ import java.util.Set;
 @Table(name = "Hobby")
 @NamedQueries({
         @NamedQuery(name = "Hobby.deleteAll", query = "delete from Hobby"),
-        @NamedQuery(name = "Hobby.findHobbyByName", query = "select h from Hobby h where h.name = :name")
+        @NamedQuery(name = "Hobby.findHobbyByName", query = "select h from Hobby h where h.name = :name"),
+        @NamedQuery(name = "Hobby.findAll", query = "select h from Hobby h")
 })
 public class Hobby {
     @Id

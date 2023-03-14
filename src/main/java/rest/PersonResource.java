@@ -123,5 +123,12 @@ public class PersonResource {
         return Response.ok().entity(PERSON_FACADE.getPeopleByPostalCode(postalCodeDTO)).build();
     }
 
+    @GET
+    @Path("hobby/all")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getAllHobbies() throws PersonNotFoundException{
+        return Response.ok().entity(PERSON_FACADE.getAllHobbies()).build();
+    }
+
 
 }

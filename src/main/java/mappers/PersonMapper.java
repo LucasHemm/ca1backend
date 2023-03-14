@@ -218,5 +218,25 @@ public class PersonMapper {
         return personDTOS;
     }
 
+    public static List<HobbyDTO> getAllHobbies(EntityManagerFactory emf) throws PersonNotFoundException {
+        EntityManager em = emf.createEntityManager();
+        ArrayList<HobbyDTO> hobbyDTOS = new ArrayList();
+        try {
+            Query query = em.createNamedQuery("Hobby.findAll");
+            List<Hobby> rs = query.getResultList();
+            for (Hobby h : rs) {
+                HobbyDTO hDTO = new HobbyDTO(h);
+                hobbyDTOS.add(hDTO);
+            }
+        } catch (Exception e) {
+            throw new PersonNotFoundException("Could not get postal codes");
+        } finally {
+            em.close();
+        }
+        return hobbyDTOS;
+    }
 
 }
+
+
+

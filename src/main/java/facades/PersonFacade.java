@@ -68,5 +68,8 @@ public class PersonFacade {
     public static List<PersonDTO> getPeopleByPostalCode(PostalCodeDTO postalCode) throws PersonNotFoundException{
         return PersonMapper.getPeopleByPostalCode(postalCode, emf);
     }
+    public static List<HobbyDTO> getAllHobbies() throws PersonNotFoundException {
+        return PersonMapper.getAllHobbies(emf);
+    }
 
 }
