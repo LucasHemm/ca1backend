@@ -62,6 +62,8 @@ public class PersonResource {
         List<PersonDTO> personDTOList = PERSON_FACADE.getAllPersons();
         String json = GSON.toJson(personDTOList);
 
+
+
         return Response.ok().entity(json).build();
     }
 

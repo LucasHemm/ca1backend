@@ -27,21 +27,23 @@ public class Populator {
         EntityManager em = emf.createEntityManager();
         PersonFacade pf = PersonFacade.getPersonFacade(emf);
         Query query = em.createNamedQuery("CityInfo.findCity");
-        query.setParameter("zipCode", "3751");
+        query.setParameter("zipCode", "2800");
         CityInfo cityInfo = (CityInfo) query.getSingleResult();
-        Address address = new Address("Lærkevej 4", "no additional info", cityInfo);
-        Phone phone = new Phone("1212121212", "no additional info");
+        Address address = new Address("Lyngby hovedgade", "no additional info", cityInfo);
+        Phone phone = new Phone("25252525", "no additional info");
         Set<Phone> phones = new HashSet<>();
         phones.add(phone);
-        Hobby hobby1 = em.find(Hobby.class, 14);
-        Hobby hobby2 = em.find(Hobby.class, 42);
+        Hobby hobby1 = em.find(Hobby.class, 53);
+        Hobby hobby2 = em.find(Hobby.class, 54);
+        Hobby hobby3 = em.find(Hobby.class, 55);
         System.out.println(hobby1.getId() + " HERE IS the ID");
         Set<Hobby> hobbies = new HashSet<>();
         hobbies.add(hobby1);
         hobbies.add(hobby2);
+        hobbies.add(hobby3);
 
 
-        pf.create(new PersonDTO(new Person("Mace@mail","mace","Windu",phones,address,hobbies)));
+        pf.create(new PersonDTO(new Person("Anakin@mail","Anakin","Skywalker",phones,address,hobbies)));
 
     }
     
