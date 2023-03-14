@@ -122,6 +122,7 @@ public class PersonMapper {
 
             for (Person person : resultList) {
                 PersonDTO personDTO = new PersonDTO(person);
+                personDTO.setId(person.getId());
                 resultDTOList.add(personDTO);
             }
         } catch (Exception e) {
@@ -164,6 +165,7 @@ public class PersonMapper {
             p = query.getSingleResult();
             System.out.println(p.getFirstName() + "this is PERSON P");
             pDTO = new PersonDTO(p);
+            pDTO.setId(p.getId());
         } catch (Exception e) {
             throw new PersonNotFoundException("Could not get person by number");
         } finally {
@@ -182,6 +184,7 @@ public class PersonMapper {
             List<Person> personList = em.createNamedQuery("Person.findAll").getResultList();
             for (Person person : personList) {
                 PersonDTO personDTO = new PersonDTO(person);
+                personDTO.setId(person.getId());
                 personDTOList.add(personDTO);
             }
         } catch (Exception e) {
@@ -204,6 +207,7 @@ public class PersonMapper {
             List<Person> resultList = query.getResultList();
             for (Person person : resultList) {
                 PersonDTO personDTO = new PersonDTO(person);
+                personDTO.setId(person.getId());
                 personDTOS.add(personDTO);
             }
         } catch (Exception e) {

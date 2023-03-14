@@ -1,10 +1,13 @@
 package rest;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.Set;
+import javax.servlet.*;
 import javax.ws.rs.core.Application;
 
 @javax.ws.rs.ApplicationPath("api")
-public class ApplicationConfig extends Application {
+public class ApplicationConfig extends Application{
 
     @Override
     public Set<Class<?>> getClasses() {
@@ -27,6 +30,7 @@ public class ApplicationConfig extends Application {
         resources.add(rest.PostalCodeResource.class);
         resources.add(errorhandling.PersonNotFoundException.class);
         resources.add(errorhandling.PersonNotFoundExceptionMapper.class);
+        resources.add(rest.CorsFilter.class);
     }
     
 }
