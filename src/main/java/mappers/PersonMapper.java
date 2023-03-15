@@ -235,6 +235,22 @@ public class PersonMapper {
         }
         return hobbyDTOS;
     }
+    public static HobbyDTO getHobbyByName(String hobbyName, EntityManagerFactory emf) throws PersonNotFoundException {
+        EntityManager em = emf.createEntityManager();
+        HobbyDTO hobbyDTO;
+        try {
+                Query query = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :hobbyName");
+                query.setParameter("hobbyName", hobbyName);
+                Hobby hobby = (Hobby) query.getSingleResult();
+                hobbyDTO = new HobbyDTO(hobby);
+
+        } catch (Exception e) {
+            throw new PersonNotFoundException("Could not get hobby by name");
+        } finally {
+            em.close();
+        }
+        return hobbyDTO;
+    }
 
 }
 

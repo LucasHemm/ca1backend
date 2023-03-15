@@ -130,5 +130,12 @@ public class PersonResource {
         return Response.ok().entity(PERSON_FACADE.getAllHobbies()).build();
     }
 
+    @GET
+    @Path("hobby/name/{name}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getHobbyByName(@PathParam("name") String name) throws PersonNotFoundException{
+        return Response.ok().entity(PERSON_FACADE.getHobbyByName(name)).build();
+    }
+
 
 }

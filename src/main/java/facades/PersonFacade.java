@@ -72,4 +72,8 @@ public class PersonFacade {
         return PersonMapper.getAllHobbies(emf);
     }
 
+    public static HobbyDTO getHobbyByName(String hobbyName) throws PersonNotFoundException {
+        return PersonMapper.getHobbyByName(hobbyName, emf);
+    }
+
 }
