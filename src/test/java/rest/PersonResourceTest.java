@@ -148,7 +148,7 @@ public class PersonResourceTest {
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .body("idPerson", equalTo(person.getId()))
                 .body("firstName", equalTo(person.getFirstName()));
-        System.out.println(person.getFirstName());
+        System.out.println(gson.toJson(person));
     }
 
     @Test
