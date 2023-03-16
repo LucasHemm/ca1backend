@@ -185,6 +185,9 @@ public class PersonMapper {
 //            List<Person> personList = em.createNamedQuery("Person.findAll").getResultList();
             List<Person> personList = query.getResultList();
             System.out.println(personList);
+            for(Person person : personList) {
+                System.out.println(person.getAddress().getStreet());
+            }
             for (Person person : personList) {
                 PersonDTO personDTO = new PersonDTO(person);
                 personDTO.setId(person.getId());
