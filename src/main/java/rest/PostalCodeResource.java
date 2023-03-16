@@ -28,6 +28,7 @@ public class PostalCodeResource {
     public Response getAllPostalCodes() throws PersonNotFoundException {
         return Response.ok().entity(GSON.toJson(PostalCodeFacade.getPostalCodes())).build();
     }
+    //test
 
 
 }
