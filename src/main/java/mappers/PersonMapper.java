@@ -235,7 +235,7 @@ public class PersonMapper {
                 hobbyDTOS.add(hDTO);
             }
         } catch (Exception e) {
-            throw new PersonNotFoundException("Could not get postal codes");
+            throw new PersonNotFoundException("Could not get all hobbies");
         } finally {
             em.close();
         }

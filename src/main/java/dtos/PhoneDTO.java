@@ -25,6 +25,7 @@ public class PhoneDTO {
     }
 
     public PhoneDTO(Phone phone){
+        this.id = phone.getId();
         this.number = phone.getNumber();
         this.description = phone.getDescription();
     }
