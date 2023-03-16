@@ -181,7 +181,9 @@ public class PersonMapper {
         List<PersonDTO> personDTOList = new ArrayList<>();
 
         try {
-            List<Person> personList = em.createNamedQuery("Person.findAll").getResultList();
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
+//            List<Person> personList = em.createNamedQuery("Person.findAll").getResultList();
+            List<Person> personList = query.getResultList();
             for (Person person : personList) {
                 PersonDTO personDTO = new PersonDTO(person);
                 personDTO.setId(person.getId());
