@@ -186,7 +186,7 @@ public class PersonMapper {
             List<Person> personList = query.getResultList();
             System.out.println(personList);
             for(Person person : personList) {
-                System.out.println(person.getAddress().getStreet());
+                System.out.println(person.getFirstName() + " " + person.getLastName());
             }
             for (Person person : personList) {
                 PersonDTO personDTO = new PersonDTO(person);
