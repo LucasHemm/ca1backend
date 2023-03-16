@@ -190,7 +190,7 @@ public class PersonMapper {
                 personDTOList.add(personDTO);
             }
         } catch (Exception e) {
-            throw new PersonNotFoundException("Could not get all persons");
+            e.printStackTrace();
         } finally {
             em.close();
         }
